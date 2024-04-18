@@ -46,13 +46,16 @@ class Generic_UNet_DP(Generic_UNet):
         and very quick on the one GPU they need to run on. BAM.
         final_nonlin is lambda x:x here!
         """
+        def identity(x):
+            return x
+        
         super(Generic_UNet_DP, self).__init__(input_channels, base_num_features, num_classes, num_pool,
                                               num_conv_per_stage,
                                               feat_map_mul_on_downscale, conv_op,
                                               norm_op, norm_op_kwargs,
                                               dropout_op, dropout_op_kwargs,
                                               nonlin, nonlin_kwargs, deep_supervision, dropout_in_localization,
-                                              lambda x: x, weightInitializer, pool_op_kernel_sizes,
+                                              identity, weightInitializer, pool_op_kernel_sizes,
                                               conv_kernel_sizes,
                                               upscale_logits, convolutional_pooling, convolutional_upsampling,
                                               max_num_features)
