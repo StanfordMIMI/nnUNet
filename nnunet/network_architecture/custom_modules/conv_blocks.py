@@ -18,6 +18,8 @@ from nnunet.network_architecture.custom_modules.helperModules import Identity
 from torch import nn
 import numpy as np
 
+def identity(x):
+    return x
 
 def _maybe_convert_scalar_to_list(conv_op, scalar):
     if not isinstance(scalar, (tuple, list, np.ndarray)):
@@ -181,7 +183,7 @@ class BasicResidualBlock(nn.Module):
                                                                       bias=False),
                                                      props['norm_op'](out_planes, **props['norm_op_kwargs']))
         else:
-            self.downsample_skip = lambda x: x
+            self.downsample_skip = identity
 
     def forward(self, x):
         residual = x
@@ -247,7 +249,7 @@ class ResidualBottleneckBlock(nn.Module):
             self.downsample_skip = nn.Sequential(props['conv_op'](in_planes, out_planes, 1, stride_here, bias=False),
                                                  props['norm_op'](out_planes, **props['norm_op_kwargs']))
         else:
-            self.downsample_skip = lambda x: x
+            self.downsample_skip = identity
 
     def forward(self, x):
         residual = x
