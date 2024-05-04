@@ -35,6 +35,8 @@ from torch.cuda.amp import autocast
 from nnunet.training.learning_rate.poly_lr import poly_lr
 from batchgenerators.utilities.file_and_folder_operations import *
 
+def identity(x):
+    return x
 
 class nnUNetTrainerV2(nnUNetTrainer):
     """
@@ -146,9 +148,6 @@ class nnUNetTrainerV2(nnUNetTrainer):
             conv_op = nn.Conv2d
             dropout_op = nn.Dropout2d
             norm_op = nn.InstanceNorm2d
-
-        def identity(x):
-            return x
 
         norm_op_kwargs = {'eps': 1e-5, 'affine': True}
         dropout_op_kwargs = {'p': 0, 'inplace': True}
