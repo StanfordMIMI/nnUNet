@@ -22,7 +22,9 @@ from nnunet.network_architecture.initialization import InitWeights_He
 from nnunet.network_architecture.neural_network import SegmentationNetwork
 import torch.nn.functional
 
-
+def identity(x):
+    return x
+            
 class ConvDropoutNormNonlin(nn.Module):
     """
     fixes a bug in ConvDropoutNormNonlin where lrelu was used regardless of nonlin. Bad.
@@ -361,8 +363,6 @@ class Generic_UNet(SegmentationNetwork):
         self.upscale_logits_ops = []
         cum_upsample = np.cumprod(np.vstack(pool_op_kernel_sizes), axis=0)[::-1]
 
-        def identity(x):
-            return x
         for usl in range(num_pool - 1):
             if self.upscale_logits:
                 self.upscale_logits_ops.append(Upsample(scale_factor=tuple([int(i) for i in cum_upsample[usl + 1]]),
